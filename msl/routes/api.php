@@ -27,7 +27,11 @@ Route::get('/role-test', function () {
     $user->assignRole($role);
 
     return response()->json([
-        'user'        => $user->only(['id', 'name', 'email']),
+        'user'        => [
+            'id'    => $user->id,
+            'name'  => $user->name,
+            'email' => $user->email,
+        ],
         'roles'       => $user->getRoleNames(),
         'permissions' => $user->getAllPermissions()->pluck('name'),
     ]);
