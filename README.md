@@ -18,3 +18,11 @@ This is a management system with laravel 10 and php-8.1
 
     php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
     php artisan migrate
+
+## Role Seeder
+
+    php artisan db:seed --class=RoleSeeder
+
+    # Or just run all seeders:
+
+    php artisan db:seed
