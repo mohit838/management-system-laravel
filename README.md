@@ -11,3 +11,10 @@ This is a management system with laravel 10 and php-8.1
     composer require tymon/jwt-auth
     php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
     php artisan jwt:secret
+
+## Permission & Role Setup
+
+    composer require spatie/laravel-permission
+
+    php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+    php artisan migrate
