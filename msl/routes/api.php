@@ -40,11 +40,11 @@ Route::get('/role-test', function () {
 
 
 Route::get('/admin-only', function () {
-    return response()->json(['message' => 'Welcome, admin 🚀']);
+    return response()->json(['message' => 'Welcome, admin']);
 })->middleware(['auth:api', 'role:admin']);
 
 Route::get('/manage-users', function () {
-    return response()->json(['message' => 'You can manage users ✅']);
+    return response()->json(['message' => 'You can manage users']);
 })->middleware(['auth:api', 'permission:manage users']);
 
 Route::get('/admin-or-manager', function () {
@@ -56,7 +56,7 @@ Route::get('/admin-or-manager', function () {
 Route::get('/test', function () {
     return response()->json([
         'ok' => true,
-        'message' => 'API is working 🚀',
+        'message' => 'API is working',
         'time' => now()->toDateTimeString(),
     ]);
 });
