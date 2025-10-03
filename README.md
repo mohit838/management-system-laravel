@@ -22,7 +22,7 @@
 
 ```bash
     APP_NAME=MyApp
-    APP_URL=http://localhost
+    APP_URL=http://localhost:port
 
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
@@ -83,6 +83,56 @@
 -   Why do we need a secret?
     -   JWT = header + payload + signature.
     -   The signature is created with a secret key so tokens can’t be forged.
+
+## Install `php artisan install:api`
+
+```bash
+    php artisan install:api
+```
+
+## Change Auth Guard
+
+-   Go `config/auth.php` file:
+
+```php
+    'defaults' => [
+            'guard' => env('AUTH_GUARD', 'api'), <-- web to api
+            ....
+        ],
+
+        # Then
+
+    'guards' => [
+        ....
+        # Add new 'api'
+        'api' => [
+            'driver' => env('AUTH_GUARD_DRIVER', 'jwt'),
+            'provider' => 'users',
+        ],
+    ],
+```
+
+## Change In User Model For `JwtSubject`
+
+-   Implement `JwtSubject` in UserModel
+
+```php
+    class User extends Authenticatable implements JWTSubject{
+
+        .....
+
+        // For jwt auth implementations
+        public function getJWTIdentifier()
+        {
+            return $this->getKey();
+        }
+
+        public function getJWTCustomClaims()
+        {
+            return [];
+        }
+    }
+```
 
 ## `predis` (pure PHP library) -> easier, just composer (Less prefer)
 
