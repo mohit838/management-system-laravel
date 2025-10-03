@@ -1,28 +1,56 @@
-# Management System With Laravel
+# Inventory Management System With Laravel-12x
 
-This is a management system with laravel 10 and php-8.1
+## Installing projects
 
-## Show the tree
+```bash
+    composer install
+```
 
-    tree -L 3 -I "vendor|node_modules|storage|.git"
+## Copy the **_.env_** File
 
-## Install package for auth
+```bash
+    cp .env.example .env
+```
 
-    composer require tymon/jwt-auth
-    php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
-    php artisan jwt:secret
+## Generate the App Key
 
-## Permission & Role Setup
+```bash
+    php artisan key:generate
+```
 
-    composer require spatie/laravel-permission
+## Configure the **_.env_** File
 
-    php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+```bash
+    APP_NAME=MyApp
+    APP_URL=http://localhost
+
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=your_db_name
+    DB_USERNAME=your_db_user
+    DB_PASSWORD=your_db_password
+
+```
+
+## Run Database Migrations And Run (Optional)
+
+```bash
     php artisan migrate
-
-## Role Seeder
-
-    php artisan db:seed --class=RoleSeeder
-
-    # Or just run all seeders:
-
     php artisan db:seed
+```
+
+## Install Frontend Dependencies (Optional, if using Vite or Laravel Mix)
+
+```bash
+    npm install
+    npm run dev
+```
+
+-   This compiles CSS/JS if the project uses them.
+
+## Start the Local Development Server
+
+```bash
+    php artisan serve
+```
