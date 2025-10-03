@@ -1,14 +1,16 @@
 <?php
 
-use App\Http\Controllers\Api\ApiController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ApiController;
 
-Route::Post('/register', [ApiController::class, 'register']);
-Route::Post('/login', [ApiController::class, 'login']);
-Route::Get('/', [ApiController::class, 'index']);
+// Public routes
+Route::get('/', [ApiController::class, 'index']);
+Route::post('/register', [ApiController::class, 'register']);
+Route::post('/login', [ApiController::class, 'login']);
 
+// Protected routes with JWT auth middleware
 Route::middleware('auth:api')->group(function () {
-    Route::Get('/me', [ApiController::class, 'me']);
-    Route::Post('/logout', [ApiController::class, 'logout']);
+    Route::get('/me', [ApiController::class, 'me']);
+    Route::post('/logout', [ApiController::class, 'logout']);
+    Route::post('/refresh', [ApiController::class, 'refresh']);
 });

@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
+use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 
 class ApiController extends Controller
 {
-    // Index [_request]
+    // Health check endpoint
     public function index(Request $request)
     {
         return response()->json(['message' => 'API is working']);
@@ -17,13 +20,10 @@ class ApiController extends Controller
     // Register [name, email, password, password_confirmation]
     public function register(Request $request)
     {
-        // dd($request->all());
-        // dump($request->all());
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            "password_confirmation" => "required|string|min:8"
         ]);
 
         $user = User::create([
@@ -32,43 +32,62 @@ class ApiController extends Controller
             'password' => bcrypt($validatedData['password']),
         ]);
 
-        return response()->json(['message' => 'User registered successfully', 'user' => $user], 201);
+        return response()->json([
+            'message' => 'User registered successfully',
+            'user' => $user
+        ], 201);
     }
 
-    // public function me(Request $request)
-    // {
-    //     return response()->json($request->user());
-    // }
+    // Login [email, password]
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
 
+        try {
+            if (! $token = JWTAuth::attempt($credentials)) {
+                return response()->json(['error' => 'Invalid credentials'], 401);
+            }
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Could not create token'], 500);
+        }
 
-    // public function login(Request $request)
-    // {
-    //     $credentials = $request->only('email', 'password');
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => JWTAuth::factory()->getTTL() * 60,
+        ]);
+    }
 
-    //     if (! $token = auth()->attempt($credentials)) {
-    //         return response()->json(['error' => 'Unauthorized'], 401);
-    //     }
+    // Get authenticated user
+    public function me(Request $request)
+    {
+        return response()->json(Auth::user());
+    }
 
-    //     return response()->json([
-    //         'access_token' => $token,
-    //         'token_type' => 'bearer',
-    //         'expires_in' => auth()->factory()->getTTL() * 60
-    //     ]);
-    // }
+    // Logout
+    public function logout(Request $request)
+    {
+        try {
+            JWTAuth::invalidate(JWTAuth::getToken());
+            return response()->json(['message' => 'Successfully logged out']);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Failed to logout, token invalid'], 500);
+        }
+    }
 
-    // public function logout()
-    // {
-    //     auth()->logout();
+    // Refresh token
+    public function refresh()
+    {
+        try {
+            $newToken = JWTAuth::refresh(JWTAuth::getToken());
 
-    //     return response()->json(['message' => 'Successfully logged out']);
-    // }
-
-    // public function refresh()
-    // {
-    //     return response()->json([
-    //         'access_token' => auth()->refresh(),
-    //         'token_type' => 'bearer',
-    //         'expires_in' => auth()->factory()->getTTL() * 60
-    //     ]);
-    // }
+            return response()->json([
+                'access_token' => $newToken,
+                'token_type' => 'bearer',
+                'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            ]);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Token refresh failed'], 401);
+        }
+    }
 }
