@@ -134,6 +134,10 @@
     }
 ```
 
+## After jwt setups
+
+-   Create `Api/ApiController` add (reg, login) then go `route/api.php` (define api route)
+
 ## `predis` (pure PHP library) -> easier, just composer (Less prefer)
 
 -   If you don’t want to install system packages, Laravel supports the predis/predis library instead.
