@@ -23,3 +23,14 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 .env.testing
+/coverage-report
+.phpunit.coverage.cache
+.phpunit.xml
+phpunit.xml
+.phpunit.xml.dist
+/.php-cs-fixer.cache
+/.php-cs-fixer.dist.php
+/.php-cs-fixer.php
+/.styleci.yml
+/.vscode-server
+/.vscode-test       
