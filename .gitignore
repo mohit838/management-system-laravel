@@ -34,3 +34,12 @@ phpunit.xml
 /.styleci.yml
 /.vscode-server
 /.vscode-test       
+/.vscode-test-web
+/.vscode-test-remote
+/.vscode-test-remote-web
+/.vscode-test-remote-ssh
+/.vscode-test-remote-ssh-web
+/.vscode-test-remote-containers
+php.ini
+xdebug.ini
+/.phpenv

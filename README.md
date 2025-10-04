@@ -487,4 +487,99 @@ Here are the most common `artisan & composer commands` you’ll use:
     php artisan view:clear
     php artisan event:list
 ```
+
 php artisan test --coverage-html coverage-report
+
+## For Unit Test With Visualizations
+
+-   Need to install in local machine: `sudo apt-get install php8.3-xdebug`
+
+## Minimal Xdebug config for coverage only
+
+-   `sudo nano /etc/php/8.3/mods-available/xdebug.ini`
+
+```bash
+        zend_extension=xdebug.so
+
+        [xdebug]
+        ; enable debug + coverage
+        xdebug.mode=debug,coverage
+
+        ; don’t start debugger unless VS Code is listening
+        xdebug.start_with_request=yes
+
+        ; VS Code Debugger connection
+        xdebug.client_host=127.0.0.1
+        xdebug.client_port=9003
+
+```
+
+-   Then Enable it:
+
+```bash
+    sudo phpenmod xdebug
+```
+
+## Run PHPUnit Coverage
+
+-   This will generate `coverage file` and can `open html file` with test report
+
+```bash
+    php artisan test --env=testing --coverage-html coverage-report
+```
+
+## Debugger Settings
+
+-   Install `PHP Debug` <b>from Xdebug</b> `_.(Must be verified one)._`
+
+-   Then minimal setups will be: `.vscode/launch.json` (add .gitignore)
+
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "PHPUnit Test (Xdebug)",
+            "type": "php",
+            "request": "launch",
+            "program": "${workspaceFolder}/vendor/bin/phpunit",
+            "cwd": "${workspaceFolder}",
+            "port": 9003,
+            "env": {
+                "XDEBUG_MODE": "debug,coverage",
+                "APP_ENV": "testing"
+            }
+        },
+        {
+            "name": "Laravel (Artisan Serve)",
+            "type": "php",
+            "request": "launch",
+            "program": "${workspaceFolder}/artisan",
+            "cwd": "${workspaceFolder}",
+            "port": 9003,
+            "runtimeArgs": ["serve", "--host=127.0.0.1", "--port=8000"],
+            "env": {
+                "XDEBUG_MODE": "debug",
+                "APP_ENV": "local"
+            }
+        },
+        {
+            "name": "Listen for Xdebug",
+            "type": "php",
+            "request": "launch",
+            "port": 9003,
+            "log": true
+        }
+    ]
+}
+```
+
+### Workflow For Debugging
+
+-   Open AuthServiceTest.php.
+
+-   Place a breakpoint (F9).
+
+-   Press F5 in VS Code with config Debug PHPUnit with Task.
+
+-   PHPUnit will run -> VS Code listens on port 9003 -> execution stops at your breakpoint.
