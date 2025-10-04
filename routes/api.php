@@ -1,16 +1,18 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ApiController;
+
+// API Test route
+Route::get('/', fn() => response()->json(['message' => 'API is working']));
 
 // Public routes
-Route::get('/', [ApiController::class, 'index']);
-Route::post('/register', [ApiController::class, 'register']);
-Route::post('/login', [ApiController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
 // Protected routes with JWT auth middleware
 Route::middleware('auth:api')->group(function () {
-    Route::get('/me', [ApiController::class, 'me']);
-    Route::post('/logout', [ApiController::class, 'logout']);
-    Route::post('/refresh', [ApiController::class, 'refresh']);
+    Route::get('/me', [AuthController::class, 'me']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
 });

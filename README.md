@@ -292,3 +292,114 @@ And route it in `routes/web.php`:
 -   Remove volume mounts from docker-compose.yml.
 -   Ensure `composer install --no-dev --optimize-autoloader` and `php artisan optimize` are run in the build stage.
 -   Secure your local Redis and database with proper credentials and network restrictions.
+
+---
+
+## JWT-based Laravel API into a clean layered structure:
+
+```bash
+    app/
+    ├── Http/
+    │    ├── Controllers/
+    │    │     └── Api/
+    │    │     │    └── AuthController.php
+    │    │     └── BaseApiController.php
+    │    ├── Requests/
+    │    │     ├── RegisterRequest.php
+    │    │     └── LoginRequest.php
+    │    └── Resources/
+    │    │     └── UserResource.php
+    │    └── Responses/
+    │          └── ApiResponse.php
+    ├── Interfaces/
+    │     └── BaseRepositoryInterface.php
+    │     └── UserRepositoryInterface.php
+    ├── Repositories/
+    │     ├── BaseRepository.php
+    │     └── UserRepository.php
+    ├── Services/
+    │     ├── BaseService.php
+    │     └── AuthService.php
+```
+
+### Step 1. Form Requests (Validation Layer)
+
+-   `app/Http/Requests/RegisterRequest.php`
+
+```bash
+    php artisan make:request RegisterRequest
+```
+
+-   `app/Http/Requests/LoginRequest.php`
+
+```bash
+    php artisan make:request LoginRequest
+```
+
+### Step 2. Resource (Response Transformer)
+
+-   `app/Http/Resources/UserResource.php`
+
+```bash
+    php artisan make:resource UserResource
+```
+
+### Step 3. Repository (Database Layer)
+
+-   `app/Interfaces/UserRepositoryInterface.php`
+
+```bash
+    php artisan make:interface Interface/UserRepositoryInterface
+```
+
+-   `app/Repositories/UserRepository.php`
+
+```bash
+    php artisan make:class Repository/UserRepository
+```
+
+### Step 4. Service (Business Logic Layer)
+
+-   `app/Services/AuthService.php`
+
+```bash
+    php artisan make:class Services/AuthService
+```
+
+### Step 5. Controller (Request Handling Only)
+
+-   `app/Http/Controllers/Api/AuthController.php`
+
+```bash
+     php artisan make:controller Api/AuthController
+```
+
+### Bind Interface to Repository
+
+-   `app/Providers/AppServiceProvider.php --> register()`
+
+```php
+     $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+```
+
+### Step 6. BaseResponse helper
+
+-   `app/Http/Responses/ApiResponse.php`
+
+```bash
+     php artisan make:class Http/Responses/ApiResponse
+```
+
+### Global Exception Handler (unified error format)
+
+-   `app/Exceptions/Handler.php`
+
+```bash
+    php artisan make:class Exceptions/Handler
+```
+
+### Clear Cache [important]
+
+```bash
+    php artisan optimize:clear
+```
