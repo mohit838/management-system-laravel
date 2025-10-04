@@ -36,7 +36,7 @@ WORKDIR /var/www/html
 
 # Copy composer files and install dependencies
 COPY composer.json composer.lock* ./
-RUN composer install --no-interaction --prefer-dist --no-progress
+RUN composer install --no-interaction --prefer-dist --no-progress || true
 
 # Copy the rest of the application
 COPY . .

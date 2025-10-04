@@ -11,6 +11,14 @@ services:
       - ./vendor:/var/www/html/vendor:cached
     env_file:
       - .env
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: host.docker.internal
+      DB_PORT: 3306
+      DB_DATABASE: inventory_management_system
+      DB_USERNAME: root
+      DB_PASSWORD: pass
+      REDIS_URL: redis://:pass@host.docker.internal:6379
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks: [laravel]
