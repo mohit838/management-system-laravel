@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Responses\ApiResponse;
+use App\Http\Responses\ApiResponse;
 use Illuminate\Http\JsonResponse;
 
 abstract class BaseApiController extends Controller

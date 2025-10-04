@@ -403,3 +403,88 @@ And route it in `routes/web.php`:
 ```bash
     php artisan optimize:clear
 ```
+
+## Unit Testing with PHPUnit
+
+-   `tests/Unit/UserRepositoryTest.php`
+-   `tests/Unit/AuthServiceTest.php`
+
+-   <b> Always use a separate `test database`, because `PHPUnit will reset data` (via RefreshDatabase / migrations).</b>
+
+```bash
+    php artisan test # If use phpunit.xml
+    php artisan migrate --env=testing
+    php artisan test --env=testing # If use .env.testing
+```
+
+## Clear Cache and Regenerate Autoload
+
+-   Sometimes Laravel/Composer doesn’t see new files until you regenerate the autoloader:
+
+```bash
+    composer dump-autoload
+    php artisan optimize:clear
+```
+
+## Common Laravel Commands Cheat Sheet
+
+Here are the most common `artisan & composer commands` you’ll use:
+
+-   General
+
+```bash
+    php artisan serve              # Start dev server
+    php artisan tinker             # REPL to interact with app
+    php artisan optimize:clear     # Clear all caches
+    php artisan config:clear       # Clear config cache
+    php artisan cache:clear        # Clear application cache
+    php artisan route:list         # Show all routes
+    php artisan migrate            # Run migrations
+    php artisan migrate:rollback   # Rollback last migration
+    php artisan migrate:fresh      # Drop all tables & re-run migrations
+    php artisan migrate:refresh    # Rollback & re-run all migrations
+    php artisan db:seed            # Seed DB
+    php artisan migrate:fresh --seed # Fresh migration + seed
+```
+
+-   Make (generate files)
+
+```bash
+    php artisan make:controller UserController --resource
+    php artisan make:model User -mfs       # Model + factory + seeder
+    php artisan make:request RegisterRequest
+    php artisan make:resource UserResource
+    php artisan make:middleware AuthMiddleware
+    php artisan make:test UserTest
+    php artisan make:job ProcessOrderJob
+    php artisan make:event OrderPlaced
+    php artisan make:listener SendEmailListener
+    php artisan make:policy UserPolicy --model=User
+```
+
+-   Testing
+
+```bash
+    php artisan test                   # Run all tests
+    php artisan test --filter=UserTest # Run specific test
+    php artisan test --coverage        # With coverage
+```
+
+-   Queues / Workers
+
+```bash
+    php artisan queue:work     # Start worker
+    php artisan queue:listen   # Listen for jobs
+    php artisan queue:failed   # List failed jobs
+    php artisan queue:retry 5  # Retry failed job id 5
+```
+
+-   Debugging
+
+```bash
+    php artisan route:list --except-vendor   # Only app routes
+    php artisan config:cache
+    php artisan view:clear
+    php artisan event:list
+```
+php artisan test --coverage-html coverage-report

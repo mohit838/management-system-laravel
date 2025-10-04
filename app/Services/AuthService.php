@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Interface\UserRepositoryInterface;
+use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 

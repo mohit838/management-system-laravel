@@ -6,7 +6,6 @@ use App\Http\Controllers\BaseApiController;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
-use App\Responses\ApiResponse;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
