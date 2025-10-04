@@ -294,6 +294,22 @@ And route it in `routes/web.php`:
 -   Ensure `composer install --no-dev --optimize-autoloader` and `php artisan optimize` are run in the build stage.
 -   Secure your local Redis and database with proper credentials and network restrictions.
 
+## Common Run Commands
+
+```bash
+    # Build
+    docker compose build --no-cache
+
+    # Run
+    docker compose up -d
+
+    # Connect into container
+    docker exec -it laravel12-app bash
+
+    # Run migrations
+    php artisan migrate --force
+```
+
 ---
 
 ## JWT-based Laravel API into a clean layered structure:
