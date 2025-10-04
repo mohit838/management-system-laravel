@@ -243,6 +243,7 @@ And route it in `routes/web.php`:
 
 ```bash
     docker exec -it laravel-app bash
+    docker compose exec app php artisan migrate:fresh --seed
 ```
 
 -   Then run:
