@@ -279,6 +279,7 @@ And route it in `routes/web.php`:
 ```bash
     php artisan cache:clear
     php artisan config:clear
+    php artisan optimize
 ```
 
 -   NOTE:: This ensures Laravel is really using Redis (`CACHE_DRIVER=redis`).
@@ -309,6 +310,51 @@ And route it in `routes/web.php`:
     # Run migrations
     php artisan migrate --force
 ```
+
+```bash
+    # Steps to Rebuild v1
+    docker compose down -v --remove-orphans
+    docker compose build --no-cache
+    docker compose up -d
+
+    # Steps to Rebuild v2
+    docker compose down -v --remove-orphans
+    docker system prune -af
+    docker compose build --no-cache
+    docker compose up -d
+
+
+    # Then inside container:
+    docker exec -it laravel12-app sh
+    php -m | grep mysql
+
+    # You should see:
+    pdo_mysql
+    mysqlnd
+
+    # Then:
+    php artisan migrate:fresh
+```
+
+## The Concept — Docker Networks on Linux
+
+-   `172.17.0.1` is the default `gateway IP of Docker’s default bridge` network on Linux.
+
+-   When you install Docker on Linux, it creates a default virtual network interface called: `docker0`
+
+-   You can check it: `ip addr show docker0`
+
+    -   You’ll see something like: `inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0`
+
+-   This means:
+
+    -   Docker assigns your host machine the IP `172.17.0.1`
+
+    -   All containers on the default bridge network get IPs like `172.17.0.2`, `172.17.0.3`, etc.
+
+    -   Those containers can reach your host system via that special IP address.
+
+    -   So, in a Linux setup: `172.17.0.1` is your host machine’s IP inside Docker’s internal bridge network.
 
 ---
 

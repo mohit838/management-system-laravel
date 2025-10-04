@@ -10,13 +10,13 @@ services:
       - .env
     environment:
       DB_CONNECTION: mysql
-      DB_HOST: host.docker.internal
+      DB_HOST: 172.17.0.1 # 172.17.0.1:Docker IP for host machine
       DB_PORT: 3306
       DB_DATABASE: inventory_management_system
       DB_USERNAME: root
-      DB_PASSWORD: pass # Update with your actual password
+      DB_PASSWORD: password
       REDIS_CLIENT: phpredis
-      REDIS_URL: redis://:pass@host.docker.internal:6379 # Update with your actual password
+      REDIS_URL: redis://:password@172.17.0.1:6379 # 172.17.0.1:Docker IP for host machine
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:
