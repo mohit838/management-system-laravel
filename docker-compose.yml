@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   app:
     build:
@@ -6,11 +8,15 @@ services:
       target: prod
     container_name: laravel12-app
     restart: unless-stopped
-    volumes:
-      - ./:/var/www/html
-      - ./vendor:/var/www/html/vendor:cached
     env_file:
       - .env
+    volumes:
+      # Mount code for live edit; if you want pure prod, remove this line.
+      - ./:/var/www/html
+      # Keep vendor cached on host so builds are faster; optional in prod.
+      - ./vendor:/var/www/html/vendor:cached
+      # Ensure storage is writable and persistent
+      - ./storage:/var/www/html/storage
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks: [laravel]
