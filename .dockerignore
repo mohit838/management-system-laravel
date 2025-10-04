@@ -1,0 +1,61 @@
+# ======================
+# Laravel / PHP
+# ======================
+vendor/
+node_modules/
+storage/logs/
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+
+# ======================
+# Build / Dev files
+# ======================
+.env
+.env.local
+.env.*.backup
+*.log
+*.md
+*.bak
+*.tmp
+*.swp
+
+# ======================
+# Version Control / IDE
+# ======================
+.git
+.gitignore
+.gitattributes
+.idea/
+.vscode/
+*.code-workspace
+
+# ======================
+# Node / Frontend
+# ======================
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# ======================
+# OS files
+# ======================
+.DS_Store
+Thumbs.db
+
+# ======================
+# Docker-related
+# ======================
+docker-compose.override.yml
+Dockerfile.dev
+docker-compose.dev.yml
+
+# ======================
+# Tests / Docs
+# ======================
+tests/
+docs/
